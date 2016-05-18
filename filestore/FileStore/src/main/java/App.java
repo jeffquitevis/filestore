@@ -22,7 +22,7 @@ public class App {
 
 //
 //         System.out.print(ps.delete(3));
-//         System.out.print(ps.search(15));
+         System.out.print(ps.search(1));
 
 
 
