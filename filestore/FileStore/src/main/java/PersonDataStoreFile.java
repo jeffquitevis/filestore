@@ -33,12 +33,13 @@ public class PersonDataStoreFile implements DataStore {
             //Initialize tempFileSize
             int tempFileSize = 0;
 
-            for (int x = 0; x < file.length(); x++){
+            for (int x = 0; x < file.length(); x = baos.size()){
 
                 //Read existing file and add the Person element to list
-                tempPerson = new Person(dis.readInt(),dis.readUTF(),dis.readUTF());
+                tempPerson = new Person(dis.readBoolean(),dis.readInt(),dis.readUTF(),dis.readUTF());
 
                 //Write the Person element to a temp file buffer
+                dos.writeBoolean(tempPerson.getDelete());
                 dos.writeInt(tempPerson.getId());
                 dos.writeUTF(tempPerson.getFirstName());
                 dos.writeUTF(tempPerson.getLastName());
@@ -49,9 +50,10 @@ public class PersonDataStoreFile implements DataStore {
 
             }
 
-        } catch (EOFException e){
-
-        }finally {
+        }catch (EOFException ex){
+            System.out.print("");
+        }
+        finally {
             dos.close();
         }
     }
@@ -64,6 +66,7 @@ public class PersonDataStoreFile implements DataStore {
 
             int size = (int) file.length();
 
+            dos.writeBoolean(person.getDelete());
             dos.writeInt(person.getId());
             dos.writeUTF(person.getFirstName());
             dos.writeUTF(person.getLastName());
@@ -81,98 +84,101 @@ public class PersonDataStoreFile implements DataStore {
 
         Person person = null;
 
-        try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+        try(DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
 
-            if (map.containsKey(id)){
+            if (map.containsKey(id)) {
 
                 dis.skipBytes(map.get(id));
-                person = new Person(dis.readInt(),dis.readUTF(),dis.readUTF());
+                person = new Person(dis.readBoolean(),dis.readInt(), dis.readUTF(), dis.readUTF());
 
-            }else{
-
-                return null;
+                if (person.getDelete() == false){
+                    return person;
+                }
             }
-        }
-        return person;
-    }
 
+        }catch (EOFException ex){
+            System.out.print("");
+        }
+        return null;
+    }
 
     @Override
     public Person delete(int id) throws IOException {
-
-        Person deletePerson = null;
-        ByteArrayOutputStream baos = null;
-        DataOutputStream dosMemory = null;
-
-        //Get the person to be deleted
-        try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
-
-            if(map.containsKey(id)) {
-
-                dis.skipBytes(map.get(id));
-
-                deletePerson = new Person(dis.readInt(), dis.readUTF(), dis.readUTF());
-
-            }else if (!map.containsKey(id)){
-
-                return null;
-            }
+        return null;
+    }
 
 
-        }
-
-
-        //Loop tru file and save it to memory
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))){
-
-            Person tempPerson = null;
-            baos = new ByteArrayOutputStream();
-            dosMemory = new DataOutputStream(baos);
-
-                for (int x = 0; x < file.length(); x++){
-
-                    tempPerson = new Person(dis.readInt(),dis.readUTF(),dis.readUTF());
-
-                    if (deletePerson.getId() != tempPerson.getId()){
-
-                        dosMemory.writeInt(tempPerson.getId());
-                        dosMemory.writeUTF(tempPerson.getFirstName());
-                        dosMemory.writeUTF(tempPerson.getLastName());
-                    }
-                }
-
-        }catch (EOFException ex){
-            System.out.print("");
-        }finally {
-
-            baos.close();
-            dosMemory.close();
-        }
-
-        //Write the Person from memory to file
-        try(DataInputStream dis = new DataInputStream(new ByteArrayInputStream(baos.toByteArray()))){
-
-            DataOutputStream dosFile = new DataOutputStream(new FileOutputStream(file));
-
-            map.clear();
-
-            for (int x = 0; x < baos.size(); x++){
-
-                dosFile.writeInt(dis.readInt());
-                dosFile.writeUTF(dis.readUTF());
-                dosFile.writeUTF(dis.readUTF());
-
-            }
-
-            dosFile.close();
-
-        }catch (EOFException ex){
-            System.out.print("");
-        }
-
-        reindexMap();
-
-        return deletePerson;
+//    @Override
+//    public Person delete(int id) throws IOException {
+//
+//        Person deletePerson = null;
+//        ByteArrayOutputStream baos = null;
+//        DataOutputStream dosMemory = null;
+//
+//        //Get the person to be deleted
+//        try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+//
+//            if(map.containsKey(id)) {
+//
+//                dis.skipBytes(map.get(id));
+//
+//                deletePerson = new Person(dis.readInt(), dis.readUTF(), dis.readUTF());
+//
+//            }else if (!map.containsKey(id)){
+//
+//                return null;
+//            }
+//
+//
+//        }
+//
+//
+//        //Loop tru file and save it to memory
+//        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+//
+//            Person tempPerson = null;
+//            baos = new ByteArrayOutputStream();
+//            dosMemory = new DataOutputStream(baos);
+//
+//                for (int x = 0; x < file.length(); x++){
+//
+//                    tempPerson = new Person(dis.readInt(),dis.readUTF(),dis.readUTF());
+//
+//                    if (deletePerson.getId() != tempPerson.getId()){
+//
+//                        dosMemory.writeInt(tempPerson.getId());
+//                        dosMemory.writeUTF(tempPerson.getFirstName());
+//                        dosMemory.writeUTF(tempPerson.getLastName());
+//                    }
+//                }
+//
+//        }finally {
+//
+//            baos.close();
+//            dosMemory.close();
+//        }
+//
+//        //Write the Person from memory to file
+//        try(DataInputStream dis = new DataInputStream(new ByteArrayInputStream(baos.toByteArray()))){
+//
+//            DataOutputStream dosFile = new DataOutputStream(new FileOutputStream(file));
+//
+//            map.clear();
+//
+//            for (int x = 0; x < baos.size(); x++){
+//
+//                dosFile.writeInt(dis.readInt());
+//                dosFile.writeUTF(dis.readUTF());
+//                dosFile.writeUTF(dis.readUTF());
+//
+//            }
+//
+//            dosFile.close();
+//
+//        }
+//        reindexMap();
+//
+//        return deletePerson;
     }
 
 
@@ -193,11 +199,3 @@ public class PersonDataStoreFile implements DataStore {
 
 
 
-
-
-
-
-
-
-
-}

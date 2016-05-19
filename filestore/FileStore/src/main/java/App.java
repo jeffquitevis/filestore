@@ -15,12 +15,12 @@ public class App {
         PersonStore ps = new PersonStore(pdsf);
 
 
-//        ps.addUser(new Person(1,"jeff","quitevis"));
-//        ps.addUser(new Person(2,"marcus","quitevis"));
-//        ps.addUser(new Person(3,"susan","quitevis"));
+//        ps.addUser(new Person(false,1,"jeff","quitevis"));
+//        ps.addUser(new Person(false,2,"marcus","quitevis"));
+//        ps.addUser(new Person(false,3,"susan","quitevis"));
 
 
-//
+
 //         System.out.print(ps.delete(3));
          System.out.print(ps.search(1));
 

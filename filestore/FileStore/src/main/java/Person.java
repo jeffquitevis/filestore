@@ -5,15 +5,18 @@ import java.io.Serializable;
  */
 public class Person implements Serializable {
 
-    String firstName;
-    String lastName;
-    int Id;
+    private String firstName;
+    private String lastName;
+    private int id;
+    private boolean delete;
 
 
-        public Person(int Id,String firstName,String lastName){
+        public Person( boolean delete,int id,String firstName,String lastName){
+
+            this.delete = delete;
             this.firstName = firstName;
             this.lastName = lastName;
-            this.Id = Id;
+            this.id = id;
         }
 
 
@@ -34,11 +37,19 @@ public class Person implements Serializable {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        id = id;
+    }
+
+    public Boolean getDelete() {
+        return delete;
+    }
+
+    public void setDelete(Boolean delete) {
+        this.delete = delete;
     }
 
 
@@ -47,7 +58,7 @@ public class Person implements Serializable {
         return "Person{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", Id=" + Id +
+                ", id=" + id +
                 '}';
     }
 }
