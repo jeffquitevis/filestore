@@ -25,7 +25,9 @@ public class PersonDataStoreFile implements DataStore {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
 
+
         try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+
 
 
             Person tempPerson = null;
@@ -33,7 +35,8 @@ public class PersonDataStoreFile implements DataStore {
             //Initialize tempFileSize
             int tempFileSize = 0;
 
-            for (int x = 0; x < file.length(); x++){
+
+            for (int x = 0; x < file.length(); x = baos.size() ){
 
                 //Read existing file and add the Person element to list
                 tempPerson = new Person(dis.readInt(),dis.readUTF(),dis.readUTF());
@@ -49,9 +52,7 @@ public class PersonDataStoreFile implements DataStore {
 
             }
 
-        } catch (EOFException e){
-
-        }finally {
+        } finally {
             dos.close();
         }
     }
@@ -118,33 +119,32 @@ public class PersonDataStoreFile implements DataStore {
                 return null;
             }
 
-
         }
 
 
-        //Loop tru file and save it to memory
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+        //Loop through file and save it to memory
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
 
             Person tempPerson = null;
             baos = new ByteArrayOutputStream();
             dosMemory = new DataOutputStream(baos);
 
-                for (int x = 0; x < file.length(); x++){
 
-                    tempPerson = new Person(dis.readInt(),dis.readUTF(),dis.readUTF());
 
-                    if (deletePerson.getId() != tempPerson.getId()){
 
-                        dosMemory.writeInt(tempPerson.getId());
-                        dosMemory.writeUTF(tempPerson.getFirstName());
-                        dosMemory.writeUTF(tempPerson.getLastName());
-                    }
+            for (int x = 0; x < file.length(); x = baos.size()) {
+
+                tempPerson = new Person(dis.readInt(), dis.readUTF(), dis.readUTF());
+
+                if (deletePerson.getId() != tempPerson.getId()) {
+
+                    dosMemory.writeInt(tempPerson.getId());
+                    dosMemory.writeUTF(tempPerson.getFirstName());
+                    dosMemory.writeUTF(tempPerson.getLastName());
                 }
 
-        }catch (EOFException ex){
-            System.out.print("");
-        }finally {
 
+            }
             baos.close();
             dosMemory.close();
         }
@@ -166,10 +166,7 @@ public class PersonDataStoreFile implements DataStore {
 
             dosFile.close();
 
-        }catch (EOFException ex){
-            System.out.print("");
         }
-
         reindexMap();
 
         return deletePerson;

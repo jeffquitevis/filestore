@@ -28,7 +28,7 @@ public class PersonStore {
        return person;
     }
 
-     public Person delete(int id) throws Exception {
+     public Person delete(int id) throws IOException{
 
          Person person = dataStore.delete(id);
 
