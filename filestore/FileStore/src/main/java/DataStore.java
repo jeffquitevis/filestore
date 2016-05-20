@@ -9,6 +9,6 @@ public interface DataStore {
 
     public void addPerson(Person person) throws IOException;
     public Person getPerson(int id) throws IOException;
-    public Person delete(int id) throws IOException;
+    public void delete(int id) throws IOException;
 
 }

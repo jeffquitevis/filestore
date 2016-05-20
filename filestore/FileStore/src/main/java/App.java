@@ -20,9 +20,9 @@ public class App {
 //        ps.addUser(new Person(false,3,"susan","quitevis"));
 
         
-//
-//         System.out.print(ps.delete(2));
-         System.out.print(ps.search(3));
+
+//        ps.delete(2);
+//         System.out.print(ps.search(3));
 
 
     }

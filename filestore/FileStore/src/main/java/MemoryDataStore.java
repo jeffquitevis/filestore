@@ -23,7 +23,6 @@ public class MemoryDataStore implements DataStore {
     @Override
     public Person getPerson(int id) throws IOException{
 
-
         Person person = null;
 
         if (map.containsKey(id)){
@@ -38,20 +37,12 @@ public class MemoryDataStore implements DataStore {
 
 
     @Override
-    public Person delete(int id) {
-
-        Person person = null;
+    public void delete(int id) {
 
         if (map.containsKey(id)){
-
-            person = map.remove(id);
-
-        }else{
-
-            return null;
+           map.remove(id);
         }
 
-        return person;
     }
 
 }

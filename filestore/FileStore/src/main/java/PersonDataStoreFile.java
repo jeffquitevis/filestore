@@ -98,6 +98,8 @@ public class PersonDataStoreFile implements DataStore {
 
                     return person;
 
+                }else {
+                    return null;
                 }
             }
 
@@ -107,8 +109,14 @@ public class PersonDataStoreFile implements DataStore {
         }
 
     @Override
-    public Person delete(int id) throws IOException {
-        return null;
+    public void delete(int id) throws IOException {
+
+        try(RandomAccessFile raf = new RandomAccessFile(file,"rw")){
+            raf.skipBytes(map.get(id));
+            raf.writeBoolean(true);
+        }
+
+
     }
 }
 
