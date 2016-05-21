@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.HashMap;
 
@@ -82,11 +83,11 @@ public class PersonDataStoreFile implements DataStore {
 
 
     @Override
-    public Person getPerson(int id)throws IOException{
+    public Person getPerson(int id)throws IOException {
 
         Person person = null;
 
-        try(DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
 
             if (map.containsKey(id)) {
 
@@ -94,29 +95,39 @@ public class PersonDataStoreFile implements DataStore {
 
                 person = new Person(dis.readBoolean(), dis.readInt(), dis.readUTF(), dis.readUTF());
 
-                if (person.getDelete() == false){
+                if (person.getDelete() == false) {
 
                     return person;
 
-                }else {
-                    return null;
                 }
             }
-
-            }
-        return null;
-
+            return null;
         }
+    }
 
     @Override
-    public void delete(int id) throws IOException {
+    public Person delete(int id) throws IOException {
 
-        try(RandomAccessFile raf = new RandomAccessFile(file,"rw")){
-            raf.skipBytes(map.get(id));
-            raf.writeBoolean(true);
+        Person deletePerson = null;
+
+        if (map.containsKey(id)) {
+
+            try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+                raf.skipBytes(map.get(id));
+                raf.writeBoolean(true);
+            }
+
+
+            try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+
+                dis.skipBytes(map.get(id));
+                deletePerson = new Person(dis.readBoolean(),dis.readInt(),dis.readUTF(),dis.readUTF());
+
+                return deletePerson;
+            }
+
         }
-
-
+        return deletePerson;
     }
 }
 

@@ -21,8 +21,8 @@ public class App {
 
         
 
-//        ps.delete(2);
-//         System.out.print(ps.search(3));
+//      System.out.print(ps.delete(2));
+         System.out.print(ps.search(1));
 
 
     }

@@ -11,7 +11,7 @@ public class PersonStore {
 
     private DataStore dataStore;
 
-    private Map<Integer,Person> map = new HashMap<>();
+    private final Map<Integer,Person> map = new HashMap<>();
 
     public PersonStore(DataStore dataStore){
         this.dataStore = dataStore;
@@ -25,13 +25,19 @@ public class PersonStore {
     public Person search(int id) throws IOException {
 
         Person person = dataStore.getPerson(id);
+
        return person;
     }
 
-     public void delete(int id) throws IOException{
-          dataStore.delete(id);
+     public Person delete(int id) throws IOException{
 
+         Person deletePerson = null;
+
+            deletePerson =  dataStore.delete(id);
+
+         return deletePerson;
      }
+
 
 
 

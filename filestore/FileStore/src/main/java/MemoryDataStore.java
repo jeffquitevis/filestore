@@ -1,8 +1,6 @@
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,7 +9,7 @@ import java.util.Map;
 public class MemoryDataStore implements DataStore {
 
 
-    Map<Integer,Person> map = new HashMap<>();
+    private Map<Integer,Person> map = new HashMap<Integer, Person>();
 
     @Override
     public void addPerson(Person person) throws IOException {
@@ -37,12 +35,15 @@ public class MemoryDataStore implements DataStore {
 
 
     @Override
-    public void delete(int id) {
+    public Person delete(int id) {
+
+        Person deletePerson = null;
 
         if (map.containsKey(id)){
-           map.remove(id);
+           deletePerson = map.remove(id);
         }
 
+        return deletePerson;
     }
 
 }
