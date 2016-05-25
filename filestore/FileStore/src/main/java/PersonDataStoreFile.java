@@ -1,5 +1,9 @@
-import javax.xml.crypto.Data;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 /**
@@ -7,16 +11,13 @@ import java.util.HashMap;
  */
 public class PersonDataStoreFile implements DataStore {
 
-    private final File file = new File("c:/temp/jeff.txt");
-
-    private final HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    private static final File FILE_RECORD = new File("c:/temp/jeff.txt");
+    private static final HashMap<Integer, Integer> MAP = new HashMap<Integer, Integer>();
 
     public PersonDataStoreFile() throws IOException {
 
-        if (file.exists()){
-
+        if (FILE_RECORD.exists()){
             reindexMap();
-
         }
     }
 
@@ -27,7 +28,7 @@ public class PersonDataStoreFile implements DataStore {
         DataOutputStream dos = new DataOutputStream(baos);
 
 
-        try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+        try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
 
 
 
@@ -38,19 +39,19 @@ public class PersonDataStoreFile implements DataStore {
 
 
 
-            for (int x = 0; x < file.length(); x = baos.size() ){
+            for (int x = 0; x < FILE_RECORD.length(); x = baos.size() ){
 
-                //Read existing file and add the Person element to list
+                //Read existing FILE_RECORD and add the Person element to list
                 tempPerson = new Person(dis.readBoolean(),dis.readInt(),dis.readUTF(),dis.readUTF());
 
-                //Write the Person element to a temp file buffer
+                //Write the Person element to a temp FILE_RECORD buffer
                 dos.writeBoolean(tempPerson.getDelete());
                 dos.writeInt(tempPerson.getId());
                 dos.writeUTF(tempPerson.getFirstName());
                 dos.writeUTF(tempPerson.getLastName());
 
                 //Re-index the Person
-                map.put(tempPerson.getId(),tempFileSize);
+                MAP.put(tempPerson.getId(),tempFileSize);
                 tempFileSize =  baos.size();
 
             }
@@ -63,18 +64,17 @@ public class PersonDataStoreFile implements DataStore {
 
 
     @Override
-    public void addPerson(Person person) {
+    public void addPerson(Person person) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException, IOException {
 
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file, true))) {
+       // EncryptRecordUtils.generateKeys();
 
-            int size = (int) file.length();
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(FILE_RECORD, true))) {
 
-            dos.writeBoolean(person.getDelete());
-            dos.writeInt(person.getId());
-            dos.writeUTF(person.getFirstName());
-            dos.writeUTF(person.getLastName());
+            int size = (int) FILE_RECORD.length();
+            byte[] encryptedRecord = EncryptRecordUtils.encrypt(person);
 
-            map.put(person.getId(), size);
+            dos.write(encryptedRecord);
+            MAP.put(person.getId(), size);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -83,17 +83,21 @@ public class PersonDataStoreFile implements DataStore {
 
 
     @Override
-    public Person getPerson(int id)throws IOException {
+    public Person getPerson(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
 
         Person person = null;
+        int bufferSize = 128;
 
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))) {
 
-            if (map.containsKey(id)) {
 
-                dis.skipBytes(map.get(id));
 
-                person = new Person(dis.readBoolean(), dis.readInt(), dis.readUTF(), dis.readUTF());
+            if (MAP.containsKey(id)) {
+
+                dis.skipBytes(MAP.get(id));
+                byte[] buffer = new byte[bufferSize];
+                dis.read(buffer);
+                person =  EncryptRecordUtils.decrypt(buffer);
 
                 if (person.getDelete() == false) {
 
@@ -110,17 +114,17 @@ public class PersonDataStoreFile implements DataStore {
 
         Person deletePerson = null;
 
-        if (map.containsKey(id)) {
+        if (MAP.containsKey(id)) {
 
-            try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-                raf.skipBytes(map.get(id));
+            try (RandomAccessFile raf = new RandomAccessFile(FILE_RECORD, "rw")) {
+                raf.skipBytes(MAP.get(id));
                 raf.writeBoolean(true);
             }
 
 
-            try(DataInputStream dis = new DataInputStream(new FileInputStream(file))){
+            try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
 
-                dis.skipBytes(map.get(id));
+                dis.skipBytes(MAP.get(id));
                 deletePerson = new Person(dis.readBoolean(),dis.readInt(),dis.readUTF(),dis.readUTF());
 
                 return deletePerson;

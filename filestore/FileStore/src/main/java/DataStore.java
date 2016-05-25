@@ -1,5 +1,10 @@
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -7,8 +12,8 @@ import java.util.List;
  */
 public interface DataStore {
 
-    public void addPerson(Person person) throws IOException;
-    public Person getPerson(int id) throws IOException;
+    public void addPerson(Person person) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException;
+    public Person getPerson(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException;
     public Person delete(int id) throws IOException;
 
 }
