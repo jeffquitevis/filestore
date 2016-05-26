@@ -1,5 +1,3 @@
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
 
 
 /**
@@ -18,11 +16,12 @@ public class App {
         PersonStore ps = new PersonStore(pdsf);
 
 
-        ps.addUser(new Person(false,1,"jeff","quitevis"));
-        ps.addUser(new Person(false,2,"marcus","quitevis"));
-        ps.addUser(new Person(false,3,"susan","quitevis"));
+//        ps.addUser(new Person(false,1,"jeff","quitevis"));
+//        ps.addUser(new Person(false,2,"marcus","quitevis"));
+//        ps.addUser(new Person(false,3,"susan","quitevis"));
 
 
-        System.out.print(ps.search(2));
+        System.out.print(ps.search(3));
+//         System.out.print(ps.delete(1));
     }
 }

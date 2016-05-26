@@ -4,8 +4,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.*;
 import java.security.*;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * Created by jeff on 5/24/2016.
@@ -62,7 +61,7 @@ public class EncryptRecordUtils {
             privateKey = (PrivateKey) ois.readObject();
         }
 
-
+        //CIPHER INIT
         cipher.init(Cipher.DECRYPT_MODE,privateKey);
         tempDecryptedRecord = cipher.doFinal(encryptedRecord);
 
@@ -84,18 +83,12 @@ public class EncryptRecordUtils {
         File publicKeyFile = new File(PUBLIC_KEY_FILE);
         File privateKeyFile = new File(PRIVATE_KEY_FILE);
 
-        if (privateKeyFile.getParentFile() != null){
+        if (!privateKeyFile.exists() && !publicKeyFile.exists()){
 
             privateKeyFile.getParentFile().mkdir();
-        }
-        privateKeyFile.createNewFile();
-
-        if (publicKeyFile.getParentFile() != null){
-
             publicKeyFile.getParentFile().mkdir();
-        }
-
-        publicKeyFile.createNewFile();
+            privateKeyFile.createNewFile();
+            publicKeyFile.createNewFile();
 
 
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(publicKeyFile))){
@@ -111,6 +104,9 @@ public class EncryptRecordUtils {
             oos.writeObject(privateKey);
 
         }
+
+        }
+
 
     }
 

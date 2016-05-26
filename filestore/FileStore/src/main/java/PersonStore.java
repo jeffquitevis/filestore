@@ -1,12 +1,10 @@
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
  /**
@@ -34,7 +32,7 @@ public class PersonStore {
        return person;
     }
 
-     public Person delete(int id) throws IOException{
+     public Person delete(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
 
          Person deletePerson = null;
 

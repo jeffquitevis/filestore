@@ -12,16 +12,18 @@ import java.util.HashMap;
 public class PersonDataStoreFile implements DataStore {
 
     private static final File FILE_RECORD = new File("c:/temp/jeff.txt");
-    private static final HashMap<Integer, Integer> MAP = new HashMap<Integer, Integer>();
+    private static  HashMap<Integer, Integer> MAP = new HashMap<Integer, Integer>();
 
-    public PersonDataStoreFile() throws IOException {
+    public PersonDataStoreFile() throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
+
+        EncryptRecordUtils.generateKeys();
 
         if (FILE_RECORD.exists()){
             reindexMap();
         }
     }
 
-    private void reindexMap() throws IOException{
+    private void reindexMap() throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
 
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -30,43 +32,37 @@ public class PersonDataStoreFile implements DataStore {
 
         try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
 
-
-
-            Person tempPerson = null;
-
-            //Initialize tempFileSize
             int tempFileSize = 0;
+            int  bufferSize = 128;
 
+            byte[] buffer = new byte[bufferSize];
 
+            for (int x = 0; x < FILE_RECORD.length(); x = baos.size()){
 
-            for (int x = 0; x < FILE_RECORD.length(); x = baos.size() ){
+                //Read existing FILE_RECORD then decrypt the record
+                dis.read(buffer);
+                Person tempPerson  =  EncryptRecordUtils.decrypt(buffer);
 
-                //Read existing FILE_RECORD and add the Person element to list
-                tempPerson = new Person(dis.readBoolean(),dis.readInt(),dis.readUTF(),dis.readUTF());
+                //Encrypt the record, EncryptRecordUtils.decrypt(buffer) method will return fix 128 size on each record.
+                byte[] tempEncryptedRecord  =  EncryptRecordUtils.encrypt(tempPerson);
+                //Write 128byte size on every record
+                dos.write(tempEncryptedRecord);
 
-                //Write the Person element to a temp FILE_RECORD buffer
-                dos.writeBoolean(tempPerson.getDelete());
-                dos.writeInt(tempPerson.getId());
-                dos.writeUTF(tempPerson.getFirstName());
-                dos.writeUTF(tempPerson.getLastName());
-
-                //Re-index the Person
+                //Put Person ID and byte size(increment by 128 on each record)
                 MAP.put(tempPerson.getId(),tempFileSize);
-                tempFileSize =  baos.size();
+                tempFileSize = baos.size();
 
             }
 
         } finally {
-
             dos.close();
+            baos.close();
         }
     }
 
 
     @Override
     public void addPerson(Person person) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException, IOException {
-
-       // EncryptRecordUtils.generateKeys();
 
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(FILE_RECORD, true))) {
 
@@ -90,8 +86,6 @@ public class PersonDataStoreFile implements DataStore {
 
         try (DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))) {
 
-
-
             if (MAP.containsKey(id)) {
 
                 dis.skipBytes(MAP.get(id));
@@ -110,26 +104,32 @@ public class PersonDataStoreFile implements DataStore {
     }
 
     @Override
-    public Person delete(int id) throws IOException {
+    public Person delete(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
 
         Person deletePerson = null;
+        byte[] buffer = new byte[128];
+        byte[] tempEncryptedRecord = null;
+        DataOutputStream dos = null;
 
         if (MAP.containsKey(id)) {
-
-            try (RandomAccessFile raf = new RandomAccessFile(FILE_RECORD, "rw")) {
-                raf.skipBytes(MAP.get(id));
-                raf.writeBoolean(true);
-            }
 
 
             try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
 
                 dis.skipBytes(MAP.get(id));
-                deletePerson = new Person(dis.readBoolean(),dis.readInt(),dis.readUTF(),dis.readUTF());
+                dis.read(buffer);
+                deletePerson = EncryptRecordUtils.decrypt(buffer);
+                deletePerson.setDelete(true);
+                tempEncryptedRecord = EncryptRecordUtils.encrypt(deletePerson);
 
-                return deletePerson;
             }
 
+            try(RandomAccessFile raf = new RandomAccessFile(FILE_RECORD,"rw")){
+
+                raf.skipBytes(MAP.get(id));
+                raf.write(tempEncryptedRecord);
+
+            }
         }
         return deletePerson;
     }
