@@ -70,7 +70,7 @@ public class UnitTestMemoryStore {
         ps.addUser(p2);
         ps.addUser(p3);
 
-        Person result = ps.search(3);
+       Person result = ps.search(3);
 
         Assert.assertEquals(result.getFirstName(),p3.getFirstName());
     }
@@ -86,9 +86,9 @@ public class UnitTestMemoryStore {
         ps.addUser(p1);
         ps.addUser(p2);
 
-        Person result = ps.delete(1);
+        ps.delete(1);
 
-        Assert.assertEquals(result.getFirstName(),p1.getFirstName());
+        Assert.assertNull(MemoryDataStore.map.get(1));
 
 
     }
@@ -103,9 +103,9 @@ public class UnitTestMemoryStore {
         ps.addUser(p1);
         ps.addUser(p2);
 
-        Person result = ps.delete(3);
+        ps.delete(3);
 
-        Assert.assertNull(result);
+        Assert.assertNull(MemoryDataStore.map.get(3));
 
     }
 
@@ -121,9 +121,9 @@ public class UnitTestMemoryStore {
         ps.addUser(p2);
         ps.addUser(p3);
 
-        Person result = ps.delete(1);
+        ps.delete(1);
 
-       Assert.assertEquals(result.getFirstName(),p1.getFirstName());
+       Assert.assertNull(MemoryDataStore.map.get(1));
 
     }
 
@@ -139,9 +139,9 @@ public class UnitTestMemoryStore {
         ps.addUser(p2);
         ps.addUser(p3);
 
-        Person result = ps.delete(3);
+        ps.delete(3);
 
-        Assert.assertEquals(result.getFirstName(),p3.getFirstName());
+        Assert.assertEquals(MemoryDataStore.map.get(3),null);
 
     }
 

@@ -12,7 +12,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
 
-        DataStore pdsf = new PersonDataStoreFile();
+        DataStore pdsf = new PersonDataStoreFile(new RSAKey());
         PersonStore ps = new PersonStore(pdsf);
 
 
@@ -21,7 +21,7 @@ public class App {
 //        ps.addUser(new Person(false,3,"susan","quitevis"));
 
 
-        System.out.print(ps.search(3));
-//         System.out.print(ps.delete(1));
+            System.out.print(ps.search(3));
+//         System.out.print(ps.delete(2));
     }
 }

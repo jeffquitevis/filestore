@@ -1,9 +1,8 @@
-import java.io.Serializable;
 
 /**
  * Created by jeff on 4/27/2016.
  */
-public class Person implements Serializable {
+public class Person{
 
     private String firstName;
     private String lastName;

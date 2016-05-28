@@ -9,7 +9,7 @@ import java.util.Map;
 public class MemoryDataStore implements DataStore {
 
 
-    private Map<Integer,Person> map = new HashMap<Integer, Person>();
+    public static Map<Integer,Person> map = new HashMap<Integer, Person>();
 
     @Override
     public void addPerson(Person person) throws IOException {
@@ -35,15 +35,13 @@ public class MemoryDataStore implements DataStore {
 
 
     @Override
-    public Person delete(int id) {
-
-        Person deletePerson = null;
+    public void delete(int id) {
 
         if (map.containsKey(id)){
-           deletePerson = map.remove(id);
+           map.remove(id);
         }
-
-        return deletePerson;
     }
+
+
 
 }

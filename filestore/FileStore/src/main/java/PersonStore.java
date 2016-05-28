@@ -32,13 +32,8 @@ public class PersonStore {
        return person;
     }
 
-     public Person delete(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
-
-         Person deletePerson = null;
-
-            deletePerson =  dataStore.delete(id);
-
-         return deletePerson;
+     public void delete(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
+            dataStore.delete(id);
      }
 
 
