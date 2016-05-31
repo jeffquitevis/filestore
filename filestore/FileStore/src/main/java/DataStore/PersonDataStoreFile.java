@@ -1,3 +1,5 @@
+package DataStore;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -6,7 +8,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by jeff on 5/10/2016.
@@ -49,13 +53,13 @@ public class PersonDataStoreFile implements DataStore {
                     dis.read(buffer);
                     Person tempPerson = EncryptRecordUtils.decrypt(buffer, privateKey);
 
-                    //Encrypt the record, EncryptRecordUtils.decrypt(buffer) method will return fix 128 size on each record.
+                    //Encrypt the record, DataStore.EncryptRecordUtils.decrypt(buffer) method will return fix 128 size on each record.
                     byte[] tempEncryptedRecord = EncryptRecordUtils.encrypt(tempPerson, publicKey);
                     //Write 128byte size on every record
                     dos.writeBoolean(tempPerson.getDelete());
                     dos.write(tempEncryptedRecord);
 
-                    //Put Person ID and byte size(increment by 128 on each record)
+                    //Put DataStore.Person ID and byte size(increment by 128 on each record)
                     MAP.put(tempPerson.getId(), tempFileSize);
                     tempFileSize = baos.size();
 
@@ -133,6 +137,29 @@ public class PersonDataStoreFile implements DataStore {
                 raf.close();
             }
         }
+    }
+
+    @Override
+    public List<Person> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+
+        List<Person> personList = new ArrayList<>();
+        int tempSize = 0;
+        byte[] buffer = new byte[128];
+
+        try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
+            for (int x = 0; x < FILE_RECORD.length(); x = tempSize ){
+
+                if (dis.readBoolean() == false){
+                    dis.read(buffer);
+                    personList.add(EncryptRecordUtils.decrypt(buffer,key.getPrivateKey()));
+                }
+
+                tempSize += buffer.length-1;
+            }
+        }
+
+
+        return personList;
     }
 }
 

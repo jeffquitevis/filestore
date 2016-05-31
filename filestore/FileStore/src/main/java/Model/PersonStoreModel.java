@@ -1,3 +1,7 @@
+package Model;
+
+import DataStore.DataStore;
+import DataStore.Person;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -5,18 +9,19 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
  /**
  * Created by jeff on 5/10/2016.
  */
-public class PersonStore {
+public class PersonStoreModel {
 
     private DataStore dataStore;
 
-    private final Map<Integer,Person> map = new HashMap<>();
+    private final Map<Integer, Person> map = new HashMap<>();
 
-    public PersonStore(DataStore dataStore){
+    public PersonStoreModel(DataStore dataStore){
         this.dataStore = dataStore;
     }
 
@@ -36,6 +41,12 @@ public class PersonStore {
             dataStore.delete(id);
      }
 
+     public List<Person> get() throws IllegalBlockSizeException, NoSuchAlgorithmException, IOException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, ClassNotFoundException {
+        List<Person> tempList = dataStore.getAllPerson();
+
+         return tempList;
+
+     }
 
 
 
