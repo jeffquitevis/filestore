@@ -6,6 +6,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,14 @@ public class MemoryDataStore implements DataStore {
 
     @Override
     public List<Person> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
-        return null;
-    }
 
+        List<Person> personList = new ArrayList<Person>();
+
+        for (int x = 0; x < map.size(); x++){
+
+            personList.add(map.get(x));
+        }
+        return personList;
+    }
 
 }
