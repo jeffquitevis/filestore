@@ -147,6 +147,7 @@ public class PersonDataStoreFile implements DataStore {
         byte[] buffer = new byte[128];
 
         try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
+
             for (int x = 0; x < FILE_RECORD.length(); x = tempSize ){
 
                 if (dis.readBoolean() == false){
