@@ -23,7 +23,6 @@ public class PersonController {
     public PersonController(PersonView view, PersonStoreModel model){
 
         this.view = view;
-
         this.model = model;
     }
 
@@ -38,8 +37,12 @@ public class PersonController {
     }
 
     public void getAllRecord() throws BadPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, ClassNotFoundException, NoSuchPaddingException, InvalidKeyException, IOException {
-        List<Person> tempList = model.get();
+        List<Person> tempList = model.getAllRecords();
         view.listAllPerson(tempList);
+    }
+
+    public void delete(int id) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, ClassNotFoundException {
+        model.delete(id);
     }
 
 

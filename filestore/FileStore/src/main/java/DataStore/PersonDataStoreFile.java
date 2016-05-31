@@ -143,22 +143,27 @@ public class PersonDataStoreFile implements DataStore {
     public List<Person> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
 
         List<Person> personList = new ArrayList<>();
-        int tempSize = 0;
         byte[] buffer = new byte[128];
+        int tempSize = buffer.length;
 
         try(DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))){
 
             for (int x = 0; x < FILE_RECORD.length(); x = tempSize ){
 
-                if (dis.readBoolean() == false){
+                   if (dis.readBoolean() == false){
                     dis.read(buffer);
                     personList.add(EncryptRecordUtils.decrypt(buffer,key.getPrivateKey()));
-                }
 
-                tempSize += buffer.length-1;
+                   }else {
+                       dis.read(buffer);
+                   }
+
+
+
+
+                tempSize += buffer.length;
             }
         }
-
 
         return personList;
     }

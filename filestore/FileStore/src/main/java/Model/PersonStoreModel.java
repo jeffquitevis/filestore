@@ -41,7 +41,7 @@ public class PersonStoreModel {
             dataStore.delete(id);
      }
 
-     public List<Person> get() throws IllegalBlockSizeException, NoSuchAlgorithmException, IOException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, ClassNotFoundException {
+     public List<Person> getAllRecords() throws IllegalBlockSizeException, NoSuchAlgorithmException, IOException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, ClassNotFoundException {
         List<Person> tempList = dataStore.getAllPerson();
 
          return tempList;

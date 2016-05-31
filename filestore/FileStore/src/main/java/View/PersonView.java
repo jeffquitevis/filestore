@@ -22,7 +22,8 @@ public class PersonView {
         for (Person person : personList){
             System.out.println("Person ID: " + person.getId());
             System.out.println("Person FIRSTNAME: " + person.getFirstName());
-            System.out.println("Person LASTNAME: " + person.getFirstName());
+            System.out.println("Person LASTNAME: " + person.getLastName());
+            System.out.println("-------------------------------------------------");
         }
     }
 }
