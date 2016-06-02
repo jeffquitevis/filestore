@@ -1,7 +1,7 @@
 package Controller;
 
-import DataStore.Person;
-import Model.PersonStoreModel;
+import Model.PersonModel;
+import DataStore.PersonStore;
 import View.PersonView;
 
 import javax.crypto.BadPaddingException;
@@ -18,31 +18,31 @@ import java.util.List;
 public class PersonController {
 
     private PersonView view;
-    private PersonStoreModel model;
+    private PersonStore personStore;
+    private PersonModel personModel;
 
-    public PersonController(PersonView view, PersonStoreModel model){
-
+    public PersonController(PersonView view, PersonStore personStore){
         this.view = view;
-        this.model = model;
+        this.personStore = personStore;
     }
 
-    public void add(Person person) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, ClassNotFoundException {
-        model.addUser(person);
+    public void add(PersonModel personModel) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, ClassNotFoundException {
+        personStore.addUser(personModel);
     }
 
     public void search(int id) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, ClassNotFoundException {
 
-        Person temp = model.search(id);
-        view.printPersonDetail(temp.getId(),temp.getFirstName(),temp.getLastName());
+        personModel = personStore.search(id);
+        view.printPersonDetail(personModel.getId(),personModel.getFirstName(),personModel.getLastName());
     }
 
     public void getAllRecord() throws BadPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, ClassNotFoundException, NoSuchPaddingException, InvalidKeyException, IOException {
-        List<Person> tempList = model.getAllRecords();
+        List<PersonModel> tempList = personStore.getAllRecords();
         view.listAllPerson(tempList);
     }
 
     public void delete(int id) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, ClassNotFoundException {
-        model.delete(id);
+        personStore.delete(id);
     }
 
 

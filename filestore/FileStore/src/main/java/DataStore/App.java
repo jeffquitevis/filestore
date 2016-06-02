@@ -1,7 +1,7 @@
 package DataStore;
 
 import Controller.PersonController;
-import Model.PersonStoreModel;
+import Model.PersonModel;
 import View.PersonView;
 
 import java.util.InputMismatchException;
@@ -18,13 +18,14 @@ public class App {
         Scanner scan = new Scanner(System.in);
         PersonView view = new PersonView();
         PersonDataStoreFile pdsf = new PersonDataStoreFile(new RSAKey());
-        PersonStoreModel psModel = new PersonStoreModel(pdsf);
-        PersonController controller = new PersonController(view,psModel);
+        PersonStore personStore = new PersonStore(pdsf);
 
-        System.out.println("[1] List Person");
-        System.out.println("[2] Add Person");
-        System.out.println("[3] Search Person");
-        System.out.println("[4] Delete Person");
+        PersonController controller = new PersonController(view,personStore);
+
+        System.out.println("[1] List PersonModel");
+        System.out.println("[2] Add PersonModel");
+        System.out.println("[3] Search PersonModel");
+        System.out.println("[4] Delete PersonModel");
         System.out.println("Select Operation: ");
 
 
@@ -50,7 +51,7 @@ public class App {
                     String lastName = scanLname.nextLine();
 
 
-                    controller.add(new Person(false,id,firstName,lastName));
+                    controller.add(new PersonModel(false,id,firstName,lastName));
 
                 }else if(input == 3){
 

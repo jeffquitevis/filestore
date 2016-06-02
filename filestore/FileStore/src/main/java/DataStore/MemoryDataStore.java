@@ -1,5 +1,7 @@
 package DataStore;
 
+import Model.PersonModel;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -17,28 +19,28 @@ import java.util.Map;
 public class MemoryDataStore implements DataStore {
 
 
-    public static Map<Integer, Person> map = new HashMap<Integer, Person>();
+    public static Map<Integer, PersonModel> map = new HashMap<Integer, PersonModel>();
 
     @Override
-    public void addPerson(Person person) throws IOException {
+    public void addPerson(PersonModel personModel) throws IOException {
 
-        map.put(person.getId(), person);
+        map.put(personModel.getId(), personModel);
     }
 
 
     @Override
-    public Person getPerson(int id) throws IOException{
+    public PersonModel getPerson(int id) throws IOException{
 
-        Person person = null;
+        PersonModel personModel = null;
 
         if (map.containsKey(id)){
 
-           person = map.get(id);
+           personModel = map.get(id);
         }else{
 
             return null;
         }
-        return person;
+        return personModel;
     }
 
 
@@ -51,15 +53,17 @@ public class MemoryDataStore implements DataStore {
     }
 
     @Override
-    public List<Person> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public List<PersonModel> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
 
-        List<Person> personList = new ArrayList<Person>();
+        List<PersonModel> personModelList = new ArrayList<PersonModel>();
+
 
         for (int x = 0; x < map.size(); x++){
 
-            personList.add(map.get(x));
+            personModelList.add(map.get(x));
+
         }
-        return personList;
+        return personModelList;
     }
 
 }

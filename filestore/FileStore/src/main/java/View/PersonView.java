@@ -1,6 +1,6 @@
 package View;
 
-import DataStore.Person;
+import Model.PersonModel;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ public class PersonView {
 
     public void printPersonDetail(int id, String firstName, String lastName){
 
-        System.out.println("Person ID: " + id);
-        System.out.println("Person FIRSTNAME: " + firstName);
-        System.out.println("Person LASTNAME: " + lastName);
+        System.out.println("PersonModel ID: " + id);
+        System.out.println("PersonModel FIRSTNAME: " + firstName);
+        System.out.println("PersonModel LASTNAME: " + lastName);
     }
 
-    public void listAllPerson(List<Person> personList){
+    public void listAllPerson(List<PersonModel> personModelList){
 
-        for (Person person : personList){
-            System.out.println("Person ID: " + person.getId());
-            System.out.println("Person FIRSTNAME: " + person.getFirstName());
-            System.out.println("Person LASTNAME: " + person.getLastName());
+        for (PersonModel personModel : personModelList){
+            System.out.println("PersonModel ID: " + personModel.getId());
+            System.out.println("PersonModel FIRSTNAME: " + personModel.getFirstName());
+            System.out.println("PersonModel LASTNAME: " + personModel.getLastName());
             System.out.println("-------------------------------------------------");
         }
     }

@@ -1,5 +1,7 @@
 package DataStore;
 
+import Model.PersonModel;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -51,16 +53,16 @@ public class PersonDataStoreFile implements DataStore {
                 dis.readBoolean();
 
                     dis.read(buffer);
-                    Person tempPerson = EncryptRecordUtils.decrypt(buffer, privateKey);
+                    PersonModel tempPersonModel = EncryptRecordUtils.decrypt(buffer, privateKey);
 
                     //Encrypt the record, DataStore.EncryptRecordUtils.decrypt(buffer) method will return fix 128 size on each record.
-                    byte[] tempEncryptedRecord = EncryptRecordUtils.encrypt(tempPerson, publicKey);
+                    byte[] tempEncryptedRecord = EncryptRecordUtils.encrypt(tempPersonModel, publicKey);
                     //Write 128byte size on every record
-                    dos.writeBoolean(tempPerson.getDelete());
+                    dos.writeBoolean(tempPersonModel.getDelete());
                     dos.write(tempEncryptedRecord);
 
-                    //Put DataStore.Person ID and byte size(increment by 128 on each record)
-                    MAP.put(tempPerson.getId(), tempFileSize);
+                    //Put Model.PersonModel ID and byte size(increment by 128 on each record)
+                    MAP.put(tempPersonModel.getId(), tempFileSize);
                     tempFileSize = baos.size();
 
 
@@ -77,21 +79,21 @@ public class PersonDataStoreFile implements DataStore {
 
 
     @Override
-    public void addPerson(Person person) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException, IOException {
+    public void addPerson(PersonModel personModel) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException, IOException {
 
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(FILE_RECORD, true))) {
 
             int size = (int) FILE_RECORD.length();
-            byte[] encryptedRecord = EncryptRecordUtils.encrypt(person,key.getPublicKey());
+            byte[] encryptedRecord = EncryptRecordUtils.encrypt(personModel,key.getPublicKey());
 
 
             //Write to file
             //[isDelete][cipherText]
-            dos.writeBoolean(person.getDelete());
+            dos.writeBoolean(personModel.getDelete());
             dos.write(encryptedRecord);
 
 
-            MAP.put(person.getId(), size);
+            MAP.put(personModel.getId(), size);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -100,9 +102,9 @@ public class PersonDataStoreFile implements DataStore {
 
 
     @Override
-    public Person getPerson(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
+    public PersonModel getPerson(int id) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, ClassNotFoundException {
 
-        Person person = null;
+        PersonModel personModel = null;
         int bufferSize = 128;
 
         try (DataInputStream dis = new DataInputStream(new FileInputStream(FILE_RECORD))) {
@@ -116,12 +118,12 @@ public class PersonDataStoreFile implements DataStore {
                 if (dis.readBoolean() == false) {
 
                     dis.read(buffer);
-                    person =  EncryptRecordUtils.decrypt(buffer,key.getPrivateKey());
+                    personModel =  EncryptRecordUtils.decrypt(buffer,key.getPrivateKey());
 
                 }
             }
 
-            return person;
+            return personModel;
         }
     }
 
@@ -140,9 +142,9 @@ public class PersonDataStoreFile implements DataStore {
     }
 
     @Override
-    public List<Person> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public List<PersonModel> getAllPerson() throws IOException, ClassNotFoundException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
 
-        List<Person> personList = new ArrayList<>();
+        List<PersonModel> personModelList = new ArrayList<>();
         byte[] buffer = new byte[128];
         int tempSize = buffer.length;
 
@@ -152,7 +154,7 @@ public class PersonDataStoreFile implements DataStore {
 
                    if (dis.readBoolean() == false){
                     dis.read(buffer);
-                    personList.add(EncryptRecordUtils.decrypt(buffer,key.getPrivateKey()));
+                    personModelList.add(EncryptRecordUtils.decrypt(buffer,key.getPrivateKey()));
 
                    }else {
                        dis.read(buffer);
@@ -165,7 +167,7 @@ public class PersonDataStoreFile implements DataStore {
             }
         }
 
-        return personList;
+        return personModelList;
     }
 }
 

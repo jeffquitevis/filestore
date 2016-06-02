@@ -1,5 +1,7 @@
 package DataStore;
 
+import Model.PersonModel;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -17,7 +19,7 @@ public class EncryptRecordUtils {
     private static final String ALGORITHM = "RSA";
 
 
-    public static byte[] encrypt(Person person, PublicKey publicKey) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, ClassNotFoundException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public static byte[] encrypt(PersonModel personModel, PublicKey publicKey) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, ClassNotFoundException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -31,10 +33,10 @@ public class EncryptRecordUtils {
         //WRITE TO BUFFER -> ENCRYPT -> RETURN ENCRYPTED BYTE[]
         try (DataOutputStream dosMemory = new DataOutputStream(baos)) {
 
-            dosMemory.writeBoolean(person.getDelete());
-            dosMemory.writeInt(person.getId());
-            dosMemory.writeUTF(person.getFirstName());
-            dosMemory.writeUTF(person.getLastName());
+            dosMemory.writeBoolean(personModel.getDelete());
+            dosMemory.writeInt(personModel.getId());
+            dosMemory.writeUTF(personModel.getFirstName());
+            dosMemory.writeUTF(personModel.getLastName());
 
             tempEncryptedRecord = cipher.doFinal(baos.toByteArray());
 
@@ -43,10 +45,10 @@ public class EncryptRecordUtils {
         return tempEncryptedRecord;
     }
 
-    public static Person decrypt(byte[] encryptedRecord, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, ClassNotFoundException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public static PersonModel decrypt(byte[] encryptedRecord, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, ClassNotFoundException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
-        Person output = null;
+        PersonModel output = null;
         byte[] tempDecryptedRecord = null;
 
 
@@ -56,7 +58,7 @@ public class EncryptRecordUtils {
 
         try (DataInputStream dis = new DataInputStream(new ByteArrayInputStream(tempDecryptedRecord))) {
 
-            output = new Person(dis.readBoolean(), dis.readInt(), dis.readUTF(), dis.readUTF());
+            output = new PersonModel(dis.readBoolean(), dis.readInt(), dis.readUTF(), dis.readUTF());
         }
 
         return output;

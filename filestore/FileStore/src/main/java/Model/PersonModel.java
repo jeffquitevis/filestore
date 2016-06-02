@@ -1,9 +1,9 @@
-package DataStore;
+package Model;
 
 /**
  * Created by jeff on 4/27/2016.
  */
-public class Person {
+public class PersonModel {
 
     private String firstName;
     private String lastName;
@@ -11,7 +11,7 @@ public class Person {
     private boolean delete;
 
 
-        public Person(boolean delete, int id, String firstName, String lastName){
+        public PersonModel(boolean delete, int id, String firstName, String lastName){
 
             this.delete = delete;
             this.firstName = firstName;
@@ -55,7 +55,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "DataStore.Person{" +
+        return "Model.PersonModel{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", id=" + id +
