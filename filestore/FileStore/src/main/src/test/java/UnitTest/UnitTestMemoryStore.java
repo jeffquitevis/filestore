@@ -1,7 +1,7 @@
 package UnitTest;
 
-import Model.PersonModel;
-import DataStore.PersonStore;
+import com.filestore.Model.PersonModel;
+import com.filestore.DataStore.PersonStore;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import DataStore.MemoryDataStore;
+import com.filestore.DataStore.MemoryDataStore;
 
 /**
  * Created by jeff on 5/11/2016.

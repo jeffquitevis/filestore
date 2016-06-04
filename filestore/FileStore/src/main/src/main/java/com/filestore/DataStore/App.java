@@ -1,8 +1,8 @@
-package DataStore;
+package com.filestore.DataStore;
 
-import Controller.PersonController;
-import Model.PersonModel;
-import View.PersonView;
+import com.filestore.Controller.PersonController;
+import com.filestore.Model.PersonModel;
+import com.filestore.View.PersonView;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

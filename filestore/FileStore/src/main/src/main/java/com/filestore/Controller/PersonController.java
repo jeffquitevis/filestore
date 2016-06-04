@@ -1,8 +1,8 @@
-package Controller;
+package com.filestore.Controller;
 
-import Model.PersonModel;
-import DataStore.PersonStore;
-import View.PersonView;
+import com.filestore.Model.PersonModel;
+import com.filestore.DataStore.PersonStore;
+import com.filestore.View.PersonView;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

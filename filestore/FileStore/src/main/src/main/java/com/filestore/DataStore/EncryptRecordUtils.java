@@ -1,6 +1,6 @@
-package DataStore;
+package com.filestore.DataStore;
 
-import Model.PersonModel;
+import com.filestore.Model.PersonModel;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

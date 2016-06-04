@@ -1,6 +1,6 @@
-package View;
+package com.filestore.View;
 
-import Model.PersonModel;
+import com.filestore.Model.PersonModel;
 
 import java.util.List;
 

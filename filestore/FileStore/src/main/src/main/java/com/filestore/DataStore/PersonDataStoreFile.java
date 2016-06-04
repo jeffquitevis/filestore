@@ -1,6 +1,6 @@
-package DataStore;
+package com.filestore.DataStore;
 
-import Model.PersonModel;
+import com.filestore.Model.PersonModel;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -55,13 +55,13 @@ public class PersonDataStoreFile implements DataStore {
                     dis.read(buffer);
                     PersonModel tempPersonModel = EncryptRecordUtils.decrypt(buffer, privateKey);
 
-                    //Encrypt the record, DataStore.EncryptRecordUtils.decrypt(buffer) method will return fix 128 size on each record.
+                    //Encrypt the record, com.filestore.DataStore.EncryptRecordUtils.decrypt(buffer) method will return fix 128 size on each record.
                     byte[] tempEncryptedRecord = EncryptRecordUtils.encrypt(tempPersonModel, publicKey);
                     //Write 128byte size on every record
                     dos.writeBoolean(tempPersonModel.getDelete());
                     dos.write(tempEncryptedRecord);
 
-                    //Put Model.PersonModel ID and byte size(increment by 128 on each record)
+                    //Put com.filestore.Model.PersonModel ID and byte size(increment by 128 on each record)
                     MAP.put(tempPersonModel.getId(), tempFileSize);
                     tempFileSize = baos.size();
 

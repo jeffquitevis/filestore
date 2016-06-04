@@ -1,4 +1,4 @@
-package Model;
+package com.filestore.Model;
 
 /**
  * Created by jeff on 4/27/2016.
@@ -55,7 +55,7 @@ public class PersonModel {
 
     @Override
     public String toString() {
-        return "Model.PersonModel{" +
+        return "com.filestore.Model.PersonModel{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", id=" + id +

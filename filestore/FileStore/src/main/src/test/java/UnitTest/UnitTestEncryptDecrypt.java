@@ -1,7 +1,7 @@
 package UnitTest;
 
-import DataStore.EncryptRecordUtils;
-import Model.PersonModel;
+import com.filestore.DataStore.EncryptRecordUtils;
+import com.filestore.Model.PersonModel;
 import junit.framework.Assert;
 import org.junit.Test;
 

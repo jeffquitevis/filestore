@@ -1,4 +1,4 @@
-package DataStore;
+package com.filestore.DataStore;
 
 import java.io.*;
 import java.security.*;

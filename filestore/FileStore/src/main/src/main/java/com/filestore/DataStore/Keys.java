@@ -1,4 +1,4 @@
-package DataStore;
+package com.filestore.DataStore;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
