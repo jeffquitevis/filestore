@@ -49,7 +49,7 @@
         <entry file="file://$PROJECT_DIR$/FileStore/src/main/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.1721519">
-              <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -78,8 +78,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-15" />
-    <option name="y" value="109" />
+    <option name="x" value="70" />
+    <option name="y" value="106" />
     <option name="width" value="984" />
     <option name="height" value="928" />
   </component>
@@ -428,7 +428,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-15" y="109" width="984" height="928" extended-state="0" />
+    <frame x="70" y="106" width="984" height="928" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -612,7 +612,7 @@
     <entry file="file://$PROJECT_DIR$/FileStore/src/main/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1721519">
-          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>
